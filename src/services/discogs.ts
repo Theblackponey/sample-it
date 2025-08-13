@@ -3,6 +3,11 @@ const DISCOGS_API_BASE = 'https://api.discogs.com';
 
 export class DiscogsService {
   static async getRandomRelease() {
+    // Si pas de token, retourner des données de démonstration
+    if (!DISCOGS_TOKEN) {
+      return this.getMockReleaseData();
+    }
+
     try {
       // Genres musicaux populaires pour la recherche aléatoire
       const genres = [
@@ -49,14 +54,77 @@ export class DiscogsService {
         };
       }
       
-      return null;
+      return this.getMockReleaseData();
     } catch (error) {
-      console.error('Erreur Discogs:', error);
-      return null;
+      console.warn('Erreur Discogs, utilisation de données de démonstration:', error);
+      return this.getMockReleaseData();
+    }
+  }
+
+  private static getMockReleaseData() {
+    const mockReleases = [
+      {
+        artist: 'Daft Punk',
+        release: 'Random Access Memories',
+        year: '2013',
+        genre: ['Electronic'],
+        style: ['House', 'Disco'],
+        country: 'France',
+        label: ['Columbia'],
+        searchQuery: 'Daft Punk Random Access Memories'
+      },
+      {
+        artist: 'Miles Davis',
+        release: 'Kind of Blue',
+        year: '1959',
+        genre: ['Jazz'],
+        style: ['Cool Jazz', 'Modal'],
+        country: 'US',
+        label: ['Columbia'],
+        searchQuery: 'Miles Davis Kind of Blue'
+      },
+      {
+        artist: 'The Beatles',
+        release: 'Abbey Road',
+        year: '1969',
+        genre: ['Rock'],
+        style: ['Pop Rock', 'Psychedelic Rock'],
+        country: 'UK',
+        label: ['Apple Records'],
+        searchQuery: 'The Beatles Abbey Road'
+      },
+      {
+        artist: 'Aphex Twin',
+        release: 'Selected Ambient Works 85-92',
+        year: '1992',
+        genre: ['Electronic'],
+        style: ['Ambient', 'IDM'],
+        country: 'UK',
+        label: ['R&S Records'],
+        searchQuery: 'Aphex Twin Selected Ambient Works'
+      },
+      {
+        artist: 'Bob Marley',
+        release: 'Legend',
+        year: '1984',
+        genre: ['Reggae'],
+        style: ['Roots Reggae'],
+        country: 'Jamaica',
+        label: ['Island Records'],
+        searchQuery: 'Bob Marley Legend'
+      }
+    ];
+
+    const randomRelease = mockReleases[Math.floor(Math.random() * mockReleases.length)];
+    return randomRelease;
     }
   }
 
   static async searchRelease(query: string) {
+    if (!DISCOGS_TOKEN) {
+      return this.getMockReleaseData();
+    }
+
     try {
       // Nettoyer le titre pour la recherche
       const cleanQuery = query
@@ -91,10 +159,10 @@ export class DiscogsService {
         }
       }
       
-      return null;
+      return this.getMockReleaseData();
     } catch (error) {
-      console.error('Erreur Discogs:', error);
-      return null;
+      console.warn('Erreur Discogs, utilisation de données de démonstration:', error);
+      return this.getMockReleaseData();
     }
   }
 }
